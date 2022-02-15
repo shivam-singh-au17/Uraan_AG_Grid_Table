@@ -5,9 +5,10 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
 const AgGridTable = () => {
-  const [gridApi, setGridApi] = useState(null);
+  const [tableData, setTableData] = useState(null);
+  console.log("tableData:", tableData);
 
-  const columns = [
+  const colData = [
     { headerName: "Athlete", field: "athlete", filter: "agTextColumnFilter" },
     { headerName: "Age", field: "age", filter: "agTextColumnFilter" },
     { headerName: "Country", field: "country", filter: "agTextColumnFilter" },
@@ -19,22 +20,26 @@ const AgGridTable = () => {
     { headerName: "Bronze", field: "bronze", filter: "agTextColumnFilter" },
     { headerName: "Total", field: "total", filter: "agTextColumnFilter" },
   ];
+
   const datasource = {
     getRows(params) {
       console.log(JSON.stringify(params.request, null, 1));
       const { startRow, endRow, filterModel, sortModel } = params.request;
       let url = `http://localhost:5000/olympic?`;
-      //Sorting
+
+      //  Sorting
       if (sortModel.length) {
         const { colId, sort } = sortModel[0];
         url += `_sort=${colId}&_order=${sort}&`;
       }
-      //Filtering
+
+      // Filtering
       const filterKeys = Object.keys(filterModel);
       filterKeys.forEach((filter) => {
         url += `${filter}=${filterModel[filter].filter}&`;
       });
-      //Pagination
+
+      // Pagination
       url += `_start=${startRow}&_end=${endRow}`;
       fetch(url)
         .then((httpResponse) => httpResponse.json())
@@ -49,7 +54,7 @@ const AgGridTable = () => {
   };
 
   const onGridReady = (params) => {
-    setGridApi(params);
+    setTableData(params);
     // register datasource with the grid
     params.api.setServerSideDatasource(datasource);
   };
@@ -58,7 +63,7 @@ const AgGridTable = () => {
     <>
       <div className="ag-theme-alpine mt-4">
         <AgGridReact
-          columnDefs={columns}
+          columnDefs={colData}
           pagination={true}
           paginationPageSize={8}
           domLayout="autoHeight"
