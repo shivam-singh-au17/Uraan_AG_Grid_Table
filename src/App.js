@@ -1,13 +1,15 @@
-import Footer from './components/Footer';
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbar'
+import AgGridTable from './components/AgGridTable'
+import Footer from './components/Footer'
 
-function App() {
+const App = () => {
   return (
-    <div>
+    <>
       <Navbar />
-      <Footer/>
-    </div>
-  );
+      <AgGridTable />
+      <Footer />
+    </>
+  )
 }
 
-export default App;
+export default App
